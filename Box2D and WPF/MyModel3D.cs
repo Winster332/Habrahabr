@@ -21,6 +21,7 @@ namespace Box2D_and_WPF
 			this.Size = size;
 			this.Position = new Vector3D(x, y, z);
 			MeshGeometry3D mesh = new MeshGeometry3D();
+			// Проставляем вершины квадрату
 			mesh.Positions = new Point3DCollection(new List<Point3D>
 			{
 				new Point3D(-size.Width/2, -size.Height/2, 0),
@@ -28,13 +29,16 @@ namespace Box2D_and_WPF
 				new Point3D(size.Width/2, size.Height/2, 0),
 				new Point3D(-size.Width/2, size.Height/2, 0)
 			});
+			// Указываем индексы для квадрата
 			mesh.TriangleIndices = new Int32Collection(new List<int> { 0, 1, 2, 0, 2, 3 });
 			mesh.TextureCoordinates = new PointCollection();
+			// Устанавливаем текстурные координаты чтоб потом могли натянуть текстуру
 			mesh.TextureCoordinates.Add(new Point(0, 1));
 			mesh.TextureCoordinates.Add(new Point(1, 1));
 			mesh.TextureCoordinates.Add(new Point(1, 0));
 			mesh.TextureCoordinates.Add(new Point(0, 0));
 
+			// Натягиваем текстуру
 			ImageBrush brush = new ImageBrush(new BitmapImage(new Uri(path)));
 			Material material = new DiffuseMaterial(brush);
 			GeometryModel3D geometryModel = new GeometryModel3D(mesh, material);
@@ -47,7 +51,8 @@ namespace Box2D_and_WPF
 			tgroup.Children.Add(rotationTransform);
 			geometryModel.Transform = tgroup;
 		}
-		public void SetPosition(Vector3D v3)
+		// Утсанавливает позицию объекта
+		public void SetPosition(Vector3D v3) 
 		{
 			translateTransform.OffsetX = v3.X;
 			translateTransform.OffsetY = v3.Y;
@@ -57,6 +62,7 @@ namespace Box2D_and_WPF
 		{
 			return new Vector3D(translateTransform.OffsetX, translateTransform.OffsetY, translateTransform.OffsetZ);
 		}
+		// Поворачивает объект
 		public void Rotation(Vector3D axis, double angle, double centerX = 0.5, double centerY = 0.5, double centerZ = 0.5)
 		{
 			rotationTransform.CenterX = translateTransform.OffsetX;

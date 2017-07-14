@@ -76,6 +76,33 @@ namespace Box2D_and_WPF
 
 			return model;
 		}
+		// Связь основанная на дистанции жесткость которой можно регулировать
+		public Joint AddDistanceJoint(Body b1, Body b2, float x1, float y1, float x2, float y2,
+			bool collideConnected = true, float hz = 1f)
+		{
+			DistanceJointDef jd = new DistanceJointDef();
+			jd.Initialize(b1, b2, new Vec2(x1, y1), new Vec2(x2, y2));
+			jd.CollideConnected = collideConnected;
+			jd.FrequencyHz = hz;
+
+			Joint joint = world.CreateJoint(jd);
+
+			return joint;
+		}
+		// Обычная жесткая связь
+		public Joint AddJoint(Body b1, Body b2, float x, float y)
+		{
+			RevoluteJointDef jd = new RevoluteJointDef();
+			jd.Initialize(b1, b2, new Vec2(x, y));
+			Joint joint = world.CreateJoint(jd);
+
+			return joint;
+		}
+		// Позволяет установить солвер
+		public void SetSolver(ContactListener listener)
+		{
+			world.SetContactListener(listener);
+		}
 		public void Step(float dt, int iterat)
 		{
 			// Параметры этого метода управляют временем мира и точностью обработки коллизий тел
